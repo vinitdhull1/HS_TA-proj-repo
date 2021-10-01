@@ -62,7 +62,7 @@ def index(request):
                 outputPath = r"" + 'http://127.0.0.1:8000\\media\\zipped_output_file\\' + zipped_file_name
                 context['output'] = outputPath
                 user_info = UploadedInputsInfo(user_names=current_user, file_names=user_zip_file_name,
-                                               output_status='SUCCESS')
+                                               output_status='SUCCESS', date=time_stamp)
                 user_info.save()
                 messages.success(request, "PROCESS STATUS: SUCCESS")
                 return render(request, 'index.html', context)
@@ -72,7 +72,7 @@ def index(request):
                 shutil.rmtree(dir_path)
                 os.remove(r"" + settings.MEDIA_ROOT + '\\' + str(uploaded_zip_file_name))
                 user_info = UploadedInputsInfo(user_names=current_user, file_names=user_zip_file_name,
-                                               output_status='FAIL')
+                                               output_status='FAIL', date=time_stamp)
                 user_info.save()
                 messages.error(request, "PROCESS STATUS: FAILED --> Error:" + str(Err))
                 return render(request, 'index.html', context)

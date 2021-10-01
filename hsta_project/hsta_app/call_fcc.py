@@ -44,7 +44,28 @@ def calling_fcc_func(pk, zip_file_name):
     figurePath = r"" + dir_path + '\\' + file_name + '\\Figures\\'
     oldallImagesList = os.listdir(r"{}".format(figurePath))
 
-    c2.Image_auto(figurePath, isbn)
+    try:
+        c2.Image_auto(figurePath, isbn)
+    except:
+        copy2(r"" + settings.MEDIA_ROOT + '\\excel_file_template\\HS_TA_Template.xlsx',
+              r"" + settings.MEDIA_ROOT + '\\created_report\\')
+        x = 0
+        filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+        wb = xl.load_workbook(filePathxl)
+        sheet = wb.active
+        for i in range(1, 56):
+            if sheet.cell(i, 1).value == "TOTALS":
+                x = i
+                break
+        today = datetime.date.today()
+        date = "{:%d-%b-%Y}".format(today)
+        sheet.cell(2, 2).value = author
+        sheet.cell(3, 2).value = title
+        sheet.cell(4, 9).value = chapter
+        sheet.cell(2, 9).value = isbn
+        sheet.cell(5, 9).value = date
+        sheet.cell(5, 2).value = "xyz@aptaracorp.com"
+        sheet.cell(3, 9).value = edition
 
     copy2(r"" + settings.MEDIA_ROOT + '\\excel_file_template\\HS_TA_Template.xlsx',
           r"" + settings.MEDIA_ROOT + '\\created_report\\')
@@ -53,7 +74,28 @@ def calling_fcc_func(pk, zip_file_name):
     print("------DOC PATH---->", docPath)
 
     if File != "None":
-        c2.createReport(figurePath, r"" + docPath, oldallImagesList, title, chapter, isbn, edition, author)
+        try:
+            c2.createReport(figurePath, r"" + docPath, oldallImagesList, title, chapter, isbn, edition, author)
+        except:
+            x = 0
+            filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+            wb = xl.load_workbook(filePathxl)
+            sheet = wb.active
+            for i in range(1, 56):
+                if sheet.cell(i, 1).value == "TOTALS":
+                    x = i
+                    break
+            today = datetime.date.today()
+            date = "{:%d-%b-%Y}".format(today)
+            sheet.cell(2, 2).value = author
+            sheet.cell(3, 2).value = title
+            sheet.cell(4, 9).value = chapter
+            sheet.cell(2, 9).value = isbn
+            sheet.cell(5, 9).value = date
+            sheet.cell(5, 2).value = "xyz@aptaracorp.com"
+            sheet.cell(3, 9).value = edition
+
+            wb.save(filePathxl)
     else:
         x = 0
         filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"

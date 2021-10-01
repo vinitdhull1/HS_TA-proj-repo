@@ -11,4 +11,4 @@ class HstaAdmin(admin.ModelAdmin):
 
 @admin.register(UploadedInputsInfo)
 class UploadedInputsInfoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user_names', 'file_names', 'output_status']
+    list_display = ['id', 'user_names', 'file_names', 'output_status', 'date']
