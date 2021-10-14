@@ -12,6 +12,7 @@ class HstaData(models.Model):
     chapter = models.CharField(max_length=10000000)
     zip_file = models.FileField()
     edition = models.CharField(max_length=10000000, blank=True)
+    email = models.CharField(max_length=10000000, blank=True)
 
     def delete(self, *args, **kwargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.zip_file.name))

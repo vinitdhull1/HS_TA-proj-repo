@@ -18,6 +18,7 @@ def calling_fcc_func(pk, zip_file_name):
         title = Data.title
         chapter = Data.chapter
         edition = Data.edition
+        email = Data.email
         zip_file_path = Data.zip_file.path
 
     dir_path = os.path.join(settings.MEDIA_ROOT, 'ID' + str(pk))
@@ -64,7 +65,8 @@ def calling_fcc_func(pk, zip_file_name):
         sheet.cell(4, 9).value = chapter
         sheet.cell(2, 9).value = isbn
         sheet.cell(5, 9).value = date
-        sheet.cell(5, 2).value = "xyz@aptaracorp.com"
+        sheet.cell(5, 2).value = email
+        sheet.cell(4, 2).value = "Aptara"
         sheet.cell(3, 9).value = edition
 
     copy2(r"" + settings.MEDIA_ROOT + '\\excel_file_template\\HS_TA_Template.xlsx',
@@ -75,7 +77,7 @@ def calling_fcc_func(pk, zip_file_name):
 
     if File != "None":
         try:
-            c2.createReport(figurePath, r"" + docPath, oldallImagesList, title, chapter, isbn, edition, author)
+            c2.createReport(figurePath, r"" + docPath, oldallImagesList, title, chapter, isbn, edition, author, email)
         except:
             x = 0
             filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
@@ -92,7 +94,8 @@ def calling_fcc_func(pk, zip_file_name):
             sheet.cell(4, 9).value = chapter
             sheet.cell(2, 9).value = isbn
             sheet.cell(5, 9).value = date
-            sheet.cell(5, 2).value = "xyz@aptaracorp.com"
+            sheet.cell(5, 2).value = email
+            sheet.cell(4, 2).value = "Aptara"
             sheet.cell(3, 9).value = edition
 
             wb.save(filePathxl)
@@ -112,7 +115,8 @@ def calling_fcc_func(pk, zip_file_name):
         sheet.cell(4, 9).value = chapter
         sheet.cell(2, 9).value = isbn
         sheet.cell(5, 9).value = date
-        sheet.cell(5, 2).value = "xyz@aptaracorp.com"
+        sheet.cell(5, 2).value = email
+        sheet.cell(4, 2).value = "Aptara"
         sheet.cell(3, 9).value = edition
 
         wb.save(filePathxl)

@@ -327,7 +327,7 @@ class Fcc:
     # pass
 
     def createReport(self, figurePath, docPath, oldallImagesList, title, chapter, isbn, author,
-                     edition, email="XYZ@aptaracorp.com"):
+                     edition, email):
         # k=c2.Image_auto(filePath)
         print("Inside report creation method")
         # print(figurePath,"figurePathhhhhhhhhhh")

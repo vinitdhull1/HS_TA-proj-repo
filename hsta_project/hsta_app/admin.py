@@ -6,7 +6,7 @@ from .models import HstaData, UploadedInputsInfo
 
 @admin.register(HstaData)
 class HstaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'ISBN', 'title', 'author', 'chapter', 'edition', 'zip_file']
+    list_display = ['id', 'ISBN', 'title', 'author', 'chapter', 'edition', 'zip_file', 'email']
 
 
 @admin.register(UploadedInputsInfo)
