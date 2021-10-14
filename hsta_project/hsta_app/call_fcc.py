@@ -34,24 +34,24 @@ def calling_fcc_func(pk, zip_file_name):
     print("------------------------------")
     c2 = Fcc()
 
-    if len(os.listdir(r"" + dir_path + '\\' + file_name + '\\Manuscripts\\')) == 0:
+    if len(os.listdir(r"" + dir_path + '/' + file_name + '/Manuscripts/')) == 0:
         File = "None"
     else:
-        for file in os.listdir(r"" + dir_path + '\\' + file_name + '\\Manuscripts\\'):
+        for file in os.listdir(r"" + dir_path + '/' + file_name + '/Manuscripts/'):
             if file.endswith(".docx"):
                 File = file
 
     print("---->", File)
-    figurePath = r"" + dir_path + '\\' + file_name + '\\Figures\\'
+    figurePath = r"" + dir_path + '/' + file_name + '/Figures/'
     oldallImagesList = os.listdir(r"{}".format(figurePath))
 
     try:
         c2.Image_auto(figurePath, isbn)
     except:
-        copy2(r"" + settings.MEDIA_ROOT + '\\excel_file_template\\HS_TA_Template.xlsx',
-              r"" + settings.MEDIA_ROOT + '\\created_report\\')
+        copy2(r"" + settings.MEDIA_ROOT + '/excel_file_template/HS_TA_Template.xlsx',
+              r"" + settings.MEDIA_ROOT + '/created_report/')
         x = 0
-        filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+        filePathxl = r"" + settings.MEDIA_ROOT + "/created_report/HS_TA_Template.xlsx"
         wb = xl.load_workbook(filePathxl)
         sheet = wb.active
         for i in range(1, 56):
@@ -69,10 +69,10 @@ def calling_fcc_func(pk, zip_file_name):
         sheet.cell(4, 2).value = "Aptara"
         sheet.cell(3, 9).value = edition
 
-    copy2(r"" + settings.MEDIA_ROOT + '\\excel_file_template\\HS_TA_Template.xlsx',
-          r"" + settings.MEDIA_ROOT + '\\created_report\\')
+    copy2(r"" + settings.MEDIA_ROOT + '/excel_file_template/HS_TA_Template.xlsx',
+          r"" + settings.MEDIA_ROOT + '/created_report/')
 
-    docPath = r"" + dir_path + '\\' + file_name + '\\Manuscripts\\' + File
+    docPath = r"" + dir_path + '/' + file_name + '/Manuscripts/' + File
     print("------DOC PATH---->", docPath)
 
     if File != "None":
@@ -80,7 +80,7 @@ def calling_fcc_func(pk, zip_file_name):
             c2.createReport(figurePath, r"" + docPath, oldallImagesList, title, chapter, isbn, edition, author, email)
         except:
             x = 0
-            filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+            filePathxl = r"" + settings.MEDIA_ROOT + "/created_report/HS_TA_Template.xlsx"
             wb = xl.load_workbook(filePathxl)
             sheet = wb.active
             for i in range(1, 56):
@@ -101,7 +101,7 @@ def calling_fcc_func(pk, zip_file_name):
             wb.save(filePathxl)
     else:
         x = 0
-        filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+        filePathxl = r"" + settings.MEDIA_ROOT + "/created_report/HS_TA_Template.xlsx"
         wb = xl.load_workbook(filePathxl)
         sheet = wb.active
         for i in range(1, 56):
@@ -121,11 +121,11 @@ def calling_fcc_func(pk, zip_file_name):
 
         wb.save(filePathxl)
 
-    copy2(r"" + settings.MEDIA_ROOT + '\\created_report\\HS_TA_Template.xlsx',
-          dir_path + '\\' + file_name)
+    copy2(r"" + settings.MEDIA_ROOT + '/created_report/HS_TA_Template.xlsx',
+          dir_path + '/' + file_name)
 
-    shutil.rmtree(dir_path + '\\' + file_name + '\\Manuscripts')
-    os.remove(r"" + settings.MEDIA_ROOT + '\\created_report\\HS_TA_Template.xlsx')
+    shutil.rmtree(dir_path + '/' + file_name + '/Manuscripts')
+    os.remove(r"" + settings.MEDIA_ROOT + '/created_report/HS_TA_Template.xlsx')
 
-    outputPath = dir_path + '\\' + file_name
+    outputPath = dir_path + '/' + file_name
     return outputPath

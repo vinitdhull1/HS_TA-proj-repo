@@ -118,8 +118,9 @@ class Fcc:
                             flag_.append(1)
                             figure.append(all_text[j])
                             if not (
-                            re.findall(("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
-                                       all_text[j + 1])):
+                                    re.findall(
+                                        ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
+                                        all_text[j + 1])):
                                 caption.append(all_text[j + 1])
                         # print(caption, "fyhjvf")
 
@@ -129,8 +130,9 @@ class Fcc:
                         flag_.append(1)
                         figure.append(all_text[j])
                         if not (
-                        re.findall(("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
-                                   all_text[j + 1])):
+                                re.findall(
+                                    ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
+                                    all_text[j + 1])):
                             caption.append(all_text[j + 1])
                 # print(caption[-1])            #print(caption,"dscs")
 
@@ -439,6 +441,10 @@ class Fcc:
             x = x + 1
             sheet.cell(x, 1).value = fig_no[i]
             sheet.cell(x, 2).value = 1
+            if "Orig" in oldallImagesList[i]:
+                sheet.cell(x, 3).value = "New"
+            else:
+                sheet.cell(x, 3).value = fig_no[i]
             # sheet.cell(x, 5).value = citation[i]
             print(citation[i])
             if citation[i] != "":  # base condition
