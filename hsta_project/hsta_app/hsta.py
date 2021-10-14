@@ -36,6 +36,8 @@ class Fcc:
                 para.text = para.text.replace("\u2022 ", "")
                 para.text = para.text.replace("\u2022", "")
                 # para.text = para.text.replace(" ", " ")
+                para.text = para.text.replace("\u2002", " ")
+                para.text = para.text.replace("\u2002 ", " ")
                 para.text = para.text.replace("\u2003", " ")
                 para.text = para.text.replace("\u2003 ", " ")
                 # para.text = para.text.replace("\"", " ")
@@ -116,9 +118,8 @@ class Fcc:
                             flag_.append(1)
                             figure.append(all_text[j])
                             if not (
-                                    re.findall(
-                                        ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
-                                        all_text[j + 1])):
+                            re.findall(("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
+                                       all_text[j + 1])):
                                 caption.append(all_text[j + 1])
                         # print(caption, "fyhjvf")
 
@@ -128,9 +129,8 @@ class Fcc:
                         flag_.append(1)
                         figure.append(all_text[j])
                         if not (
-                                re.findall(
-                                    ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
-                                    all_text[j + 1])):
+                        re.findall(("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
+                                   all_text[j + 1])):
                             caption.append(all_text[j + 1])
                 # print(caption[-1])            #print(caption,"dscs")
 
@@ -202,15 +202,15 @@ class Fcc:
                 k = "co"
                 x = 0
             fig1 = fig.split("_")
-            # print(fig1,"Aaaaaaaaa",fig)
+            print(fig1, "Aaaaaaaaa", fig)
             #
-            #
+
             if (len(fig1[1]) - x) <= 3:
-                newFig = k + fig1[0][-2:] + "-" + fig1[1][-2:] + "-" + isbn + "." + fig.split('.')[-1]
+                newFig = k + fig1[0][-2:] + "-" + fig1[1][-3:] + "-" + isbn + "." + fig.split('.')[-1]
             else:
-                newFig = k + fig1[0][-2:] + "-" + fig1[1][x + 1:x + 3] + "-" + fig1[1][
-                                                                               x + 3:] + "-" + isbn + "." + \
+                newFig = k + fig1[0][-2:] + "-" + fig1[1][x:x + 3] + "-" + fig1[1][x + 3:] + "-" + isbn + "." + \
                          fig.split('.')[-1]
+
             newFig1 = newFig.split(".")
             if newFig1[-1] not in "eps" and newFig1[-1] not in "tiff":
                 newFig1[-1] = "tiff"
@@ -252,10 +252,10 @@ class Fcc:
             #
             #
             if (len(figPDF1[1]) - x) <= 3:
-                newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][-2:] + "-" + isbn + ".pdf"
+                newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][-3:] + "-" + isbn + ".pdf"
             else:
-                newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][x + 1:x + 3] + "-" + figPDF1[1][
-                                                                                        x + 3:] + "-" + isbn + "." + \
+                newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][x:x + 3] + "-" + figPDF1[1][
+                                                                                    x + 3:] + "-" + isbn + "." + \
                             figPDF.split('.')[-1]
             # print(figPDF1,"((((((((",figPDF)
             # newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][-2:] + "-" + isbn + ".pdf"
@@ -330,33 +330,47 @@ class Fcc:
                      edition, email="XYZ@aptaracorp.com"):
         # k=c2.Image_auto(filePath)
         print("Inside report creation method")
+        # print(figurePath,"figurePathhhhhhhhhhh")
         allImagesList = os.listdir(r"{}".format(figurePath))
+
         k1 = self.fig_captxn_citatxn(r"{}".format(docPath))
         print(k1, "jnjvnvdjnv")
         figure = []
         fig_no = []
         citation = []
         allImagesList = [i for i in allImagesList if (i.split(".")[-1] != "xlsx")]
+        # for i in allImagesList:
+        #     print(figurePath+i,"checkkkkkkkkkk")
+        #     print(Image.open(figurePath+i).info['dpi'],"dpiiiiiiiiiiiiiiiiii")
         oldallImagesList = [i for i in oldallImagesList if (i.split(".")[-1] != "xlsx")]
 
         allImagesList.sort()
         oldallImagesList.sort()
 
+        print("**********************************************************")
+        print("FIG NO. -->", fig_no)
+        print("----------------------------------------------------------")
+        print("All Image List---->", allImagesList)
+        print("----------------------------------------------------------")
+        print("Old Imgages List---->", oldallImagesList)
+        print("**********************************************************")
+
+        print("k1: ", k1)
+
         for a in k1:
             print(a)
             figure.append(a[0])
             fi = a[0].split(" ")[1]
-            print(fi, re.search("\.", fi))
+            # print(fi,re.search("\.",fi))
             match = ""
             if re.findall("\.", fi):
                 match = "dot"
             # print(match)
             try:
                 if match == "dot":
-
                     fig_no.append(int(a[0].split(" ")[1].split(".")[1]))
                 else:
-                    print(a[0], "else")
+                    # print(a[0],"else")
                     fig_no.append(int(a[0].split(" ")[1].split("-")[1]))
             except Exception as e:
                 print("Error belonging to k1:--> ", e)
@@ -370,26 +384,36 @@ class Fcc:
                     fig_no.append(int(a[0].split(" ")[1].split("-")[1]))
 
             citation.append(a[2])
-        print(fig_no, "fig_no ")
+        print(fig_no, "fig_no ", len(fig_no))
         figNum = []
         print("length of all images: ", len(allImagesList))
         for i in allImagesList:
             # print(i,"(((((",i.split("-"),"********",i.split("-")[2],"********************",int(i.split("-")[2]))
             # print(i)
             figNum.append(int(i.split("-")[1]))
-        print(figNum, "fig num")
+        print(figNum, "fig num", len(figNum))
         seen = set()
         uniq = [x for x in figNum if x in seen or seen.add(x)]
         print(seen, " seen ")
-        print(uniq, "uniq")
+        print(uniq, "uniq", len(uniq))
         citList = []
+        print(len(citation), "citation ")
         for i in uniq:
-            print(i)
-            fig_no.insert(fig_no.index(i), i)
+            # print(i,"*..")
+            # #fig_no.insert(fig_no.index(i), i)
+            # fii=fig_no.index(i)
+            #
+            # ci=citation[fii]
+            # print(fii, 'fii', i,'ci',ci)
+            # citList.append(ci)
             citList.append(citation[fig_no.index(i)])
+
+        for i in uniq:
+            fig_no.insert(fig_no.index(i), i)
+
         for i in citList:
             citation.insert(citation.index(i), i)
-
+        # print(len(citation), "citation1 ",len(figNum),'*0  ',len(fig_no))
         not_common = (set(fig_no) - (set(figNum)))
         # print(not_common,"not_common")
 
@@ -403,7 +427,7 @@ class Fcc:
                 citation.insert(figNum.index(i), '')
 
         x = 0
-        filePathxl = r"" + settings.MEDIA_ROOT + "\created_report\HS_TA_Template.xlsx"
+        filePathxl = r"" + settings.MEDIA_ROOT + "/created_report/HS_TA_Template.xlsx"
         wb = xl.load_workbook(filePathxl)
         sheet = wb.active
         for i in range(1, 56):
@@ -414,6 +438,7 @@ class Fcc:
         for i in range(len(citation)):
             x = x + 1
             sheet.cell(x, 1).value = fig_no[i]
+            sheet.cell(x, 2).value = 1
             # sheet.cell(x, 5).value = citation[i]
             print(citation[i])
             if citation[i] != "":  # base condition
@@ -431,21 +456,23 @@ class Fcc:
                 sheet.cell(x, 5).value = citation[i]
 
             if allImagesList[i] == "" and fig_no[i] < 10:
-                allImagesList[i] = "f" + chapter + "-" + "0" + str(fig_no[i]) + "-" + isbn + ".eps"
+                allImagesList[i] = "f" + "chapter" + "-" + "0" + str(fig_no[i]) + "-" + isbn + ".eps"
             elif allImagesList[i] == "" and fig_no[i] >= 10:
-                allImagesList[i] = "f" + chapter + "-" + str(fig_no[i]) + "-" + isbn + ".eps"
+                allImagesList[i] = "f" + "chapter" + "-" + str(fig_no[i]) + "-" + isbn + ".eps"
 
             sheet.cell(x, 7).value = allImagesList[i]
 
             sheet.cell(x, 6).value = oldallImagesList[i]
         today = datetime.date.today()
         date = "{:%d-%b-%Y}".format(today)
+
         sheet.cell(2, 2).value = author
         sheet.cell(3, 2).value = title
         sheet.cell(4, 9).value = chapter
         sheet.cell(2, 9).value = isbn
         sheet.cell(5, 9).value = date
         sheet.cell(5, 2).value = email
+        sheet.cell(4, 2).value = "Aptara"
         sheet.cell(3, 9).value = edition
 
         wb.save(filePathxl)

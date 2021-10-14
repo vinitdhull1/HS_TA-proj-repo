@@ -32,9 +32,9 @@ def index(request):
             user_zip_file_name = Data['zip_file']
             uploaded_zip_file_name = saved_data.zip_file.name
             try:
-                if path.exists(r"" + settings.MEDIA_ROOT + '\\zipped_output_file\\'):
-                    for f in os.listdir(r"" + settings.MEDIA_ROOT + '\\zipped_output_file\\'):
-                        os.remove(os.path.join(r"" + settings.MEDIA_ROOT + '\\zipped_output_file\\', f))
+                if path.exists(r"" + settings.MEDIA_ROOT + '/zipped_output_file/'):
+                    for f in os.listdir(r"" + settings.MEDIA_ROOT + '/zipped_output_file/'):
+                        os.remove(os.path.join(r"" + settings.MEDIA_ROOT + '/zipped_output_file/', f))
                 outputPath = calling_fcc_func(data_id, user_zip_file_name)
 
                 # create a ZipFile object
@@ -53,13 +53,13 @@ def index(request):
                 HstaData.objects.filter(id=data_id).delete()
                 dir_path = os.path.join(settings.MEDIA_ROOT, 'ID' + str(data_id))
                 shutil.rmtree(dir_path)
-                os.remove(r"" + settings.MEDIA_ROOT + '\\' + str(uploaded_zip_file_name))
+                os.remove(r"" + settings.MEDIA_ROOT + '/' + str(uploaded_zip_file_name))
 
                 zipped_file_name = str(user_zip_file_name).rsplit('.', 1)[0] + '_' + str(
                     data_id) + '_' + time_stamp + '.zip'
-                zipped_output = r"" + settings.BASE_DIR + '\\' + zipped_file_name
-                shutil.move(zipped_output, r"" + settings.MEDIA_ROOT + '\\zipped_output_file\\')
-                outputPath = r"" + 'http://127.0.0.1:8000\\media\\zipped_output_file\\' + zipped_file_name
+                zipped_output = r"" + settings.BASE_DIR + '/' + zipped_file_name
+                shutil.move(zipped_output, r"" + settings.MEDIA_ROOT + '/zipped_output_file/')
+                outputPath = r"" + 'http://127.0.0.1:8000/media/zipped_output_file/' + zipped_file_name
                 context['output'] = outputPath
                 user_info = UploadedInputsInfo(user_names=current_user, file_names=user_zip_file_name,
                                                output_status='SUCCESS', date=time_stamp)
@@ -67,10 +67,11 @@ def index(request):
                 messages.success(request, "PROCESS STATUS: SUCCESS")
                 return render(request, 'index.html', context)
             except Exception as Err:
+                time_stamp = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
                 HstaData.objects.filter(id=data_id).delete()
                 dir_path = os.path.join(settings.MEDIA_ROOT, 'ID' + str(data_id))
                 shutil.rmtree(dir_path)
-                os.remove(r"" + settings.MEDIA_ROOT + '\\' + str(uploaded_zip_file_name))
+                os.remove(r"" + settings.MEDIA_ROOT + '/' + str(uploaded_zip_file_name))
                 user_info = UploadedInputsInfo(user_names=current_user, file_names=user_zip_file_name,
                                                output_status='FAIL', date=time_stamp)
                 user_info.save()

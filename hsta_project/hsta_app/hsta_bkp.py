@@ -35,17 +35,28 @@ class Fcc:
                     continue
                 para.text = para.text.replace("\u2022 ", "")
                 para.text = para.text.replace("\u2022", "")
+                # para.text = para.text.replace(" ", " ")
+                para.text = para.text.replace("\u2003", " ")
+                para.text = para.text.replace("\u2003 ", " ")
+                # para.text = para.text.replace("\"", " ")
                 all_text.append(para.text)
                 # print("------")
 
-                #print(para.text)
+                # print(para.text)
                 #    print(all_text)
                 if re.findall('^Fig', para.text):
                     count += 1
                     idx.append(all_text.index(para.text))  # index of words starting with Fig
+                    # print(para.text)
                 elif re.findall('^FIGURE', para.text):
                     count += 1
-                    idx.append(all_text.index(para.text))
+                    idx.append(all_text.index(para.text))  # index of words starting with Fig
+                    # para.text = para.text.replace("\u0020", "")
+                    # print(para.text)
+                elif re.findall('^Figure', para.text):
+                    count += 1
+                    idx.append(all_text.index(para.text))  # index of words starting with Fig
+                    # print(para.text)
 
                     # print("----")
             # print("indexes of Fig")
@@ -63,7 +74,7 @@ class Fcc:
             # print("new indexes")
             # print(x)
             # print(idx)
-            # print(max1)
+            print(max1, "max")
             # idx.pop(i)
             for i in (x):  # removing extra index for idx
                 idx.pop(i)
@@ -75,6 +86,8 @@ class Fcc:
                     fcc.append(all_text[i])
             except:
                 print("Check this file manually  (No fig found)!")
+            # print(fcc[0],"fcc")
+            # print(fcc[9], "fcc")
 
             idx1 = []
             for text in fcc:
@@ -89,13 +102,16 @@ class Fcc:
             y = all_text[0].split(" ")
             for j in idx:
                 y1 = all_text[j].split(" ")
+                # print((y1[2])=="")
+                # print(len(y1[2]))
                 # print(all_text[j].split(" "))
                 if y1 != y:
                     try:
-                        if len(y1[2]) > 0:
+                        if len(y1[2]) >= 0:
                             flag_.append(0)
                             figure.append(y1[0] + " " + y1[1])
                             caption.append(all_text[j][len(y1[0] + " " + y1[1]):])
+                        # print(caption,"fvf")
                         else:
                             flag_.append(1)
                             figure.append(all_text[j])
@@ -104,8 +120,9 @@ class Fcc:
                                         ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
                                         all_text[j + 1])):
                                 caption.append(all_text[j + 1])
+                        # print(caption, "fyhjvf")
 
-                                # print(len(y1[2]),"------",len(y1))
+                        # print(len(y1[2]),"------",len(y1))
                     except:
                         # print(len(y1))
                         flag_.append(1)
@@ -115,12 +132,14 @@ class Fcc:
                                     ("From" or "from" or 'FROM' or '(From' or '(from' or '(FROM' or '(Copyright'),
                                     all_text[j + 1])):
                             caption.append(all_text[j + 1])
+                # print(caption[-1])            #print(caption,"dscs")
 
             for i in range(0, len(idx1)):
                 k = idx1[i]
+                print(k, 'k')
                 try:
                     z = idx1[i + 1]
-                    # print(z)
+                    print(z, 'z')
 
                 except:
                     z = len(fcc)
@@ -135,6 +154,7 @@ class Fcc:
                     if fcc[c][0] == "(":
                         fcc[c] = fcc[c][1:-1]
                     citation.append(fcc[c])
+                    print(citation[-1], "fff")
 
                 else:
                     citation.append("")
@@ -144,13 +164,17 @@ class Fcc:
         except Exception as e:
 
             Error_log.append(e)
+        # print(caption[0],"cit")
+        # print(caption[9],"cit")
+
+        print(len(figure), " F ", len(caption), ", C ", len(citation))
         for i in range(len(figure)):
             print(figure[i][:20], ",", caption[i][:20], ",", citation[i][:20])
         # print(list(zip(figure, caption, citation)))
         return list(zip(figure, caption, citation))
 
         # for i in range(len(figure)):
-        #     print(figure[i][:20], ",", caption[i][:20], ",", citation[i][:20])
+        # print(figure[i][:20], ",", caption[i][:20], ",", citation[i][:20])
 
     def imgRenaming(self, otherImgList, isbn):
         figurePath = os.path.dirname(os.path.abspath(otherImgList[0]))
@@ -182,10 +206,9 @@ class Fcc:
             #
             #
             if (len(fig1[1]) - x) <= 3:
-                newFig = k + fig1[0][-2:] + "-" + fig1[1][-2:] + "-" + isbn + "." + fig.split('.')[-1]
+                newFig = k + fig1[0][-2:] + "-" + fig1[1][-3:] + "-" + isbn + "." + fig.split('.')[-1]
             else:
-                newFig = k + fig1[0][-2:] + "-" + fig1[1][x + 1:x + 3] + "-" + fig1[1][
-                                                                               x + 3:] + "-" + isbn + "." + \
+                newFig = k + fig1[0][-2:] + "-" + fig1[1][x:x + 3] + "-" + fig1[1][x + 3:] + "-" + isbn + "." + \
                          fig.split('.')[-1]
             newFig1 = newFig.split(".")
             if newFig1[-1] not in "eps" and newFig1[-1] not in "tiff":
@@ -224,14 +247,19 @@ class Fcc:
                 k = "co"
                 x = 0
             figPDF1 = figPDF.split("_")
-
+            # print(fig1,"Aaaaaaaaa",fig)
+            #
+            #
             if (len(figPDF1[1]) - x) <= 3:
                 newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][-2:] + "-" + isbn + ".pdf"
             else:
                 newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][x + 1:x + 3] + "-" + figPDF1[1][
                                                                                         x + 3:] + "-" + isbn + "." + \
                             figPDF.split('.')[-1]
-
+            # print(figPDF1,"((((((((",figPDF)
+            # newFigPdf = k + figPDF1[0][-2:] + "-" + figPDF1[1][-2:] + "-" + isbn + ".pdf"
+            # print(filePath,figPDF,"*********")
+            # print(filePath, newFigPdf, "*********")
             os.rename(r"{}/{}".format(figurePath, figPDF), r"{}/{}".format(figurePath, newFigPdf))
             # os.remove(r"{}\{}".format(filePath, newFigPdf))
             newFigPdf1 = newFigPdf.split(".")
@@ -287,8 +315,10 @@ class Fcc:
         if len(pdfList) > 0:
             try:
                 self.pdfProcess(pdfList, isbn)
-            except Exception as E:
+            except:
+                print(" embedded")
                 pass
+
         # for i in otherImgList:
         self.imgRenaming(otherImgList, isbn)
 
@@ -301,6 +331,7 @@ class Fcc:
         print("Inside report creation method")
         allImagesList = os.listdir(r"{}".format(figurePath))
         k1 = self.fig_captxn_citatxn(r"{}".format(docPath))
+        print(k1, "jnjvnvdjnv")
         figure = []
         fig_no = []
         citation = []
@@ -311,28 +342,50 @@ class Fcc:
         oldallImagesList.sort()
 
         for a in k1:
+            print(a)
             figure.append(a[0])
+            fi = a[0].split(" ")[1]
+            print(fi, re.search("\.", fi))
+            match = ""
+            if re.findall("\.", fi):
+                match = "dot"
+            # print(match)
             try:
-                fig_no.append(int(a[0].split(" ")[1].split(".")[1]))
+                if match == "dot":
+
+                    fig_no.append(int(a[0].split(" ")[1].split(".")[1]))
+                else:
+                    print(a[0], "else")
+                    fig_no.append(int(a[0].split(" ")[1].split("-")[1]))
             except Exception as e:
                 print("Error belonging to k1:--> ", e)
                 a = list(a)
                 a[0] = a[0].replace("\u2003", " ")
                 a[0] = a[0].replace("\u2002", " ")
 
-                fig_no.append(int(a[0].split(" ")[1].split(".")[1]))
+                if match == "dot":
+                    fig_no.append(int(a[0].split(" ")[1].split(".")[1]))
+                else:
+                    fig_no.append(int(a[0].split(" ")[1].split("-")[1]))
+
             citation.append(a[2])
-
+        print(fig_no, "fig_no ")
         figNum = []
-
-
+        print("length of all images: ", len(allImagesList))
         for i in allImagesList:
+            # print(i,"(((((",i.split("-"),"********",i.split("-")[2],"********************",int(i.split("-")[2]))
+            # print(i)
             figNum.append(int(i.split("-")[1]))
+        print(figNum, "fig num")
         seen = set()
         uniq = [x for x in figNum if x in seen or seen.add(x)]
+        print(seen, " seen ")
+        print(uniq, "uniq")
         citList = []
         for i in uniq:
+            print(i)
             fig_no.insert(fig_no.index(i), i)
+        for i in uniq:
             citList.append(citation[fig_no.index(i)])
         for i in citList:
             citation.insert(citation.index(i), i)
@@ -362,12 +415,16 @@ class Fcc:
             x = x + 1
             sheet.cell(x, 1).value = fig_no[i]
             # sheet.cell(x, 5).value = citation[i]
-
+            print(citation[i])
             if citation[i] != "":  # base condition
                 if re.search("^From", citation[i]):
                     sheet.cell(x, 5).value = citation[i]
                 else:
-                    ct = citation[i].rsplit("(From", 1)
+                    if re.search("\(From", citation[i]):
+                        ct = citation[i].rsplit("(From", 1)
+                    elif re.search("From", citation[i]):
+                        ct = citation[i].rsplit("From", 1)
+
                     sheet.cell(x, 5).value = "From" + ct[1]
 
             else:
